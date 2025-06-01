@@ -56,7 +56,7 @@ const Galeria3DModern = () => {
           <h2 className='text-5xl md:text-6xl font-black text-white mb-4'>
             <span className='bg-gradient-to-r from-blue-400 to-purple-600 text-transparent bg-clip-text'>
               Momentos
-            </span>{' '}
+            </span>
             <span className='text-white'>Épicos</span>
           </h2>
           <p className='text-xl text-gray-400 max-w-2xl mx-auto'>

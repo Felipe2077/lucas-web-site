@@ -16,6 +16,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'cidade',
+      title: 'Cidade (Opcional)',
+      type: 'string',
+      description: 'Ex: São Paulo, Goiânia',
+    }),
+    defineField({
       name: 'dataDoEvento',
       title: 'Data do Evento',
       type: 'datetime', // Usar datetime para incluir horário se necessário, ou 'date' para apenas data

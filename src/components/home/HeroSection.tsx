@@ -104,7 +104,7 @@ const HeroSection = () => {
                   '0 0 80px rgba(59, 130, 246, 0.5), 0 0 120px rgba(59, 130, 246, 0.3)',
               }}
             >
-              12
+              #12
             </motion.div>
           </motion.div>
 
