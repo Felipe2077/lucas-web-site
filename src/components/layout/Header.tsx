@@ -1,10 +1,16 @@
+// src/components/layout/Header.tsx
+
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 const HeaderGlassmorphism = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState('/');
+  const location = useLocation();
+
+  // Detecta a página atual baseada no pathname
+  const currentPath = location.pathname;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -13,6 +19,11 @@ const HeaderGlassmorphism = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Fecha o menu mobile quando a rota muda
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [currentPath]);
 
   const navLinks = [
     { href: '/', label: 'Home', icon: '🏁' },
@@ -23,6 +34,14 @@ const HeaderGlassmorphism = () => {
     { href: '/calendario', label: 'Calendário', icon: '📅' },
     { href: '/contato', label: 'Contato', icon: '📧' },
   ];
+
+  // Função para verificar se o link está ativo
+  const isActiveLink = (href: string) => {
+    if (href === '/') {
+      return currentPath === '/';
+    }
+    return currentPath.startsWith(href);
+  };
 
   return (
     <>
@@ -48,107 +67,94 @@ const HeaderGlassmorphism = () => {
             <div className='relative px-6 py-4'>
               <div className='flex items-center justify-between'>
                 {/* Logo */}
-                <motion.a
-                  href='/'
-                  className='flex items-center gap-3 group'
+                <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <div className='relative'>
-                    <motion.div
-                      className='text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600'
-                      animate={{
-                        backgroundPosition: ['0%', '100%', '0%'],
-                      }}
-                      transition={{
-                        duration: 5,
-                        repeat: Infinity,
-                        ease: 'linear',
-                      }}
-                      style={{
-                        backgroundSize: '200% 100%',
-                        textShadow: '0 0 30px rgba(59, 130, 246, 0.5)',
-                      }}
-                    >
-                      12
-                    </motion.div>
-                    <div className='absolute -inset-2 bg-blue-500 rounded-full opacity-20 blur-xl group-hover:opacity-40 transition-opacity' />
-                  </div>
-                  <div>
-                    <div className='text-xl font-bold text-white'>
-                      Lucas Foresti
+                  <Link to='/' className='flex items-center gap-3 group'>
+                    <div className='relative'>
+                      <motion.div
+                        className='text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600'
+                        animate={{
+                          backgroundPosition: ['0%', '100%', '0%'],
+                        }}
+                        transition={{
+                          duration: 5,
+                          repeat: Infinity,
+                          ease: 'linear',
+                        }}
+                        style={{
+                          backgroundSize: '200% 100%',
+                          textShadow: '0 0 30px rgba(59, 130, 246, 0.5)',
+                        }}
+                      >
+                        12
+                      </motion.div>
+                      <div className='absolute -inset-2 bg-blue-500 rounded-full opacity-20 blur-xl group-hover:opacity-40 transition-opacity' />
                     </div>
-                    <div className='text-xs text-gray-400 uppercase tracking-wider'>
-                      Stock Car Driver
+                    <div>
+                      <div className='text-xl font-bold text-white'>
+                        Lucas Foresti
+                      </div>
+                      <div className='text-xs text-gray-400 uppercase tracking-wider'>
+                        Stock Car Driver
+                      </div>
                     </div>
-                  </div>
-                </motion.a>
+                  </Link>
+                </motion.div>
 
                 {/* Desktop Navigation */}
                 <nav className='hidden lg:flex items-center gap-2'>
-                  {navLinks.map((link, index) => (
-                    <motion.a
-                      key={link.href}
-                      href={link.href}
-                      className={`relative px-4 py-2 rounded-xl font-medium transition-all duration-300 group ${
-                        activeLink === link.href
-                          ? 'text-white'
-                          : 'text-gray-300 hover:text-white'
-                      }`}
-                      onClick={() => setActiveLink(link.href)}
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ y: -2 }}
-                    >
-                      {/* Active indicator */}
-                      {activeLink === link.href && (
-                        <motion.div
-                          className='absolute inset-0 bg-gradient-to-r from-blue-500/20 to-orange-500/20 rounded-xl backdrop-blur-sm'
-                          layoutId='activeNav'
-                          transition={{ type: 'spring', duration: 0.5 }}
-                        />
-                      )}
+                  {navLinks.map((link, index) => {
+                    const isActive = isActiveLink(link.href);
 
-                      {/* Hover effect */}
-                      <div className='absolute inset-0 bg-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-
-                      <span className='relative z-10 flex items-center gap-2'>
-                        <span className='text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
-                          {link.icon}
-                        </span>
-                        {link.label}
-                      </span>
-
-                      {/* Underline effect */}
+                    return (
                       <motion.div
-                        className='absolute bottom-0 left-1/2 h-0.5 bg-gradient-to-r from-blue-400 to-orange-400 rounded-full'
-                        initial={{ width: 0, x: '-50%' }}
-                        whileHover={{ width: '80%' }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    </motion.a>
-                  ))}
-                </nav>
+                        key={link.href}
+                        className='relative'
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <Link
+                          to={link.href}
+                          className={`relative px-4 py-2 rounded-xl font-medium transition-all duration-300 group flex items-center gap-2 ${
+                            isActive
+                              ? 'text-white bg-gradient-to-r from-blue-500/20 to-orange-500/20 border border-blue-500/30'
+                              : 'text-gray-300 hover:text-white'
+                          }`}
+                        >
+                          {/* Hover effect - só aparece se NÃO estiver ativo */}
+                          {!isActive && (
+                            <div className='absolute inset-0 bg-white/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+                          )}
 
-                {/* CTA Button */}
-                <motion.button
-                  className='hidden lg:block relative px-6 py-3 overflow-hidden rounded-full group'
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <span className='relative z-10 font-bold text-white uppercase tracking-wider text-sm'>
-                    Seja um Parceiro
-                  </span>
-                  <div className='absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 rounded-full' />
-                  <motion.div
-                    className='absolute inset-0 bg-gradient-to-r from-orange-400 to-pink-500 rounded-full'
-                    initial={{ x: '100%', rotate: 0 }}
-                    whileHover={{ x: 0, rotate: 180 }}
-                    transition={{ duration: 0.5 }}
-                  />
-                  <div className='absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-red-500 rounded-full opacity-0 group-hover:opacity-50 blur-lg transition-opacity duration-500' />
-                </motion.button>
+                          <span
+                            className={`text-sm transition-opacity duration-300 relative z-10 ${
+                              isActive
+                                ? 'opacity-100'
+                                : 'opacity-0 group-hover:opacity-100'
+                            }`}
+                          >
+                            {link.icon}
+                          </span>
+                          <span className='relative z-10'>{link.label}</span>
+
+                          {/* Underline effect */}
+                          <motion.div
+                            className='absolute bottom-0 left-1/2 h-0.5 bg-gradient-to-r from-blue-400 to-orange-400 rounded-full'
+                            initial={{ width: 0, x: '-50%' }}
+                            animate={{
+                              width: isActive ? '80%' : 0,
+                            }}
+                            whileHover={{ width: '80%' }}
+                            transition={{ duration: 0.3 }}
+                          />
+                        </Link>
+                      </motion.div>
+                    );
+                  })}
+                </nav>
 
                 {/* Mobile Menu Button */}
                 <button
@@ -212,44 +218,71 @@ const HeaderGlassmorphism = () => {
               transition={{ type: 'spring' }}
             >
               <nav className='flex flex-col gap-2'>
-                {navLinks.map((link, index) => (
-                  <motion.a
-                    key={link.href}
-                    href={link.href}
-                    className='relative px-4 py-3 rounded-xl text-white font-medium group overflow-hidden'
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      setActiveLink(link.href);
-                      setIsMobileMenuOpen(false);
-                    }}
-                  >
+                {navLinks.map((link, index) => {
+                  const isActive = isActiveLink(link.href);
+
+                  return (
                     <motion.div
-                      className='absolute inset-0 bg-gradient-to-r from-blue-500/20 to-orange-500/20'
-                      initial={{ x: '-100%' }}
-                      whileHover={{ x: 0 }}
-                      transition={{ duration: 0.3 }}
-                    />
-                    <span className='relative z-10 flex items-center gap-3'>
-                      <span className='text-lg'>{link.icon}</span>
-                      {link.label}
-                    </span>
-                  </motion.a>
-                ))}
+                      key={link.href}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <Link
+                        to={link.href}
+                        className={`relative px-4 py-3 rounded-xl font-medium group overflow-hidden block ${
+                          isActive
+                            ? 'text-white bg-gradient-to-r from-blue-500/20 to-orange-500/20 border border-blue-500/30'
+                            : 'text-gray-300 hover:text-white'
+                        }`}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {/* Hover effect para links não ativos */}
+                        {!isActive && (
+                          <motion.div
+                            className='absolute inset-0 bg-gradient-to-r from-blue-500/20 to-orange-500/20'
+                            initial={{ x: '-100%' }}
+                            whileHover={{ x: 0 }}
+                            transition={{ duration: 0.3 }}
+                          />
+                        )}
+
+                        <span className='relative z-10 flex items-center gap-3'>
+                          <span className='text-lg'>{link.icon}</span>
+                          {link.label}
+                          {isActive && (
+                            <motion.div
+                              className='ml-auto w-2 h-2 bg-blue-400 rounded-full'
+                              animate={{ scale: [1, 1.5, 1] }}
+                              transition={{ duration: 1, repeat: Infinity }}
+                            />
+                          )}
+                        </span>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
               </nav>
 
               {/* Mobile CTA */}
-              <motion.button
-                className='w-full mt-6 relative px-6 py-3 overflow-hidden rounded-xl group'
-                whileTap={{ scale: 0.95 }}
+              <motion.div
+                className='mt-6'
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
               >
-                <span className='relative z-10 font-bold text-white uppercase tracking-wider'>
-                  Seja um Parceiro
-                </span>
-                <div className='absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl' />
-              </motion.button>
+                <Link
+                  to='/contato'
+                  className='w-full relative px-6 py-3 overflow-hidden rounded-xl group block text-center'
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span className='relative z-10 font-bold text-white uppercase tracking-wider'>
+                    Entre em Contato
+                  </span>
+                  <div className='absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl' />
+                </Link>
+              </motion.div>
             </motion.div>
           </motion.div>
         )}
