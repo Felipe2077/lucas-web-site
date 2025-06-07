@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const HeroSection = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -7,15 +8,13 @@ const HeroSection = () => {
 
   // Parallax effects
   const y1 = useTransform(scrollY, [0, 500], [0, 150]);
-  const y2 = useTransform(scrollY, [0, 500], [0, -150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
-      });
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = (e.clientX - window.innerWidth / 2) / 20;
+      const y = (e.clientY - window.innerHeight / 2) / 20;
+      setMousePosition({ x, y });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -69,12 +68,18 @@ const HeroSection = () => {
             key={i}
             className='absolute w-1 h-1 bg-blue-400 rounded-full opacity-40'
             initial={{
-              x: Math.random() * window.innerWidth,
-              y: window.innerHeight + 100,
+              x:
+                Math.random() *
+                (typeof window !== 'undefined' ? window.innerWidth : 1200),
+              y:
+                (typeof window !== 'undefined' ? window.innerHeight : 800) +
+                100,
             }}
             animate={{
               y: -100,
-              x: Math.random() * window.innerWidth,
+              x:
+                Math.random() *
+                (typeof window !== 'undefined' ? window.innerWidth : 1200),
             }}
             transition={{
               duration: Math.random() * 10 + 10,
@@ -171,38 +176,38 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
           >
-            <motion.a
-              href='/noticias'
-              className='group relative px-8 py-4 overflow-hidden rounded-full font-bold text-white uppercase tracking-wider'
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className='relative z-10'>Últimas Notícias</span>
-              <div className='absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full' />
-              <motion.div
-                className='absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full'
-                initial={{ x: '-100%' }}
-                whileHover={{ x: 0 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.a>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                to='/noticias'
+                className='group relative px-8 py-4 overflow-hidden rounded-full font-bold text-white uppercase tracking-wider block'
+              >
+                <span className='relative z-10'>Últimas Notícias</span>
+                <div className='absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-700 rounded-full' />
+                <motion.div
+                  className='absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full'
+                  initial={{ x: '-100%' }}
+                  whileHover={{ x: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </Link>
+            </motion.div>
 
-            <motion.a
-              href='/galeria'
-              className='group relative px-8 py-4 overflow-hidden rounded-full font-bold uppercase tracking-wider border-2 border-orange-500 text-orange-500'
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <span className='relative z-10 group-hover:text-white transition-colors'>
-                Ver Galeria
-              </span>
-              <motion.div
-                className='absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full'
-                initial={{ scale: 0, opacity: 0 }}
-                whileHover={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-            </motion.a>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link
+                to='/galeria'
+                className='group relative px-8 py-4 overflow-hidden rounded-full font-bold uppercase tracking-wider border-2 border-orange-500 text-orange-500 block'
+              >
+                <span className='relative z-10 group-hover:text-white transition-colors'>
+                  Ver Galeria
+                </span>
+                <motion.div
+                  className='absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full'
+                  initial={{ scale: 0, opacity: 0 }}
+                  whileHover={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </Link>
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>

@@ -5,23 +5,13 @@ import {
   type PortableTextComponentProps,
 } from '@portabletext/react';
 import type { PortableTextBlock } from '@portabletext/types';
-import imageUrlBuilder from '@sanity/image-url';
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
-import { getClient } from '../lib/sanity.client';
+import { getClient, getImageUrl, isValidImage } from '../lib/sanity.client';
 import type { NoticiaDetalhada, SanityImageObject } from '../types/sanity';
-
-// Configura o builder de URL de imagem do Sanity
-const clientInstance = getClient();
-const builder = imageUrlBuilder(clientInstance);
-
-function urlFor(source: SanityImageObject) {
-  if (!source?.asset) return '';
-  return builder.image(source);
-}
 
 // Query GROQ para buscar uma notícia específica pelo seu slug
 const noticiaQuery = `*[_type == "noticia" && slug.current == $slug][0]{
@@ -29,13 +19,15 @@ const noticiaQuery = `*[_type == "noticia" && slug.current == $slug][0]{
   titulo,
   slug,
   dataDePublicacao,
+  dataPublicacao,
   imagemDeCapa{alt, asset->},
   resumo,
   conteudo[]{
     ...,
     _type == "image" => {
       alt,
-      asset->
+      asset->,
+      legenda
     },
     markDefs[]{
       ...,
@@ -104,12 +96,17 @@ export default function NoticiasDetalhePage() {
       image: ({
         value,
       }: {
-        value: SanityImageObject & { alt?: string; isInline?: boolean };
+        value: SanityImageObject & {
+          alt?: string;
+          isInline?: boolean;
+          legenda?: string;
+        };
       }) => {
-        if (!value?.asset?._ref) {
+        if (!isValidImage(value)) {
           return null;
         }
-        const imageUrl = urlFor(value).fit('max').auto('format').url();
+
+        const imageUrl = getImageUrl(value, 800);
         if (!imageUrl) return null;
 
         return (
@@ -316,28 +313,31 @@ export default function NoticiasDetalhePage() {
     );
   }
 
-  const dataFormatada = new Date(noticia.dataDePublicacao).toLocaleDateString(
-    'pt-BR',
-    {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      timeZone: 'UTC',
-    }
-  );
+  // Corrigir as datas com verificação de segurança
+  const dataPublicacao = noticia.dataPublicacao || noticia.dataDePublicacao;
 
-  const horaFormatada = new Date(noticia.dataDePublicacao).toLocaleTimeString(
-    'pt-BR',
-    {
-      hour: '2-digit',
-      minute: '2-digit',
-      timeZone: 'UTC',
-    }
-  );
+  const dataFormatada = dataPublicacao
+    ? new Date(dataPublicacao).toLocaleDateString('pt-BR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'UTC',
+      })
+    : 'Data não disponível';
 
-  const imageUrlCapa = noticia.imagemDeCapa
-    ? urlFor(noticia.imagemDeCapa).width(1200).auto('format').quality(80).url()
-    : null;
+  const horaFormatada = dataPublicacao
+    ? new Date(dataPublicacao).toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'UTC',
+      })
+    : '00:00';
+
+  // Usar getImageUrl para a imagem de capa
+  const imageUrlCapa =
+    noticia.imagemDeCapa && isValidImage(noticia.imagemDeCapa)
+      ? getImageUrl(noticia.imagemDeCapa, 1200)
+      : null;
 
   const tempoLeitura = noticia.conteudo
     ? Math.ceil(JSON.stringify(noticia.conteudo).length / 1000)
@@ -505,7 +505,7 @@ export default function NoticiasDetalhePage() {
                       strokeLinecap='round'
                       strokeLinejoin='round'
                       strokeWidth={2}
-                      d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
+                      d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z'
                     />
                   </svg>
                   <span>
@@ -614,7 +614,7 @@ export default function NoticiasDetalhePage() {
                       strokeLinecap='round'
                       strokeLinejoin='round'
                       strokeWidth={2}
-                      d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z'
+                      d='M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 002 2z'
                     />
                   </svg>
                 </Link>

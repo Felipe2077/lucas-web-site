@@ -1,11 +1,11 @@
 // src/pages/HomePage.tsx
 
-import HomeGaleriaSection from '@/components/galeria/HomeGaleriaSection';
 import imageUrlBuilder from '@sanity/image-url';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import HomeGaleriaSection from '../components/galeria/HomeGaleriaSection';
 import CardNoticia from '../components/noticias/CardNoticia';
 import { getClient } from '../lib/sanity.client';
 import type {
@@ -41,27 +41,27 @@ interface HomePageData {
 const hojeISO = new Date().toISOString().split('T')[0];
 
 // Queries GROQ
-const ultimasNoticiasQuery = `*[_type == "noticia"]{
-  _id, titulo, slug, dataDePublicacao, imagemDeCapa{alt, asset->}, resumo
-} | order(dataDePublicacao desc) [0...3]`;
+// const ultimasNoticiasQuery = `*[_type == "noticia"]{
+//   _id, titulo, slug, dataDePublicacao, imagemDeCapa{alt, asset->}, resumo
+// } | order(dataDePublicacao desc) [0...3]`;
 
-const proximaCorridaQuery = `*[_type == "evento" && (status == "agendado" || status == "adiado") && dataDoEvento >= $hojeISO] | order(dataDoEvento asc) [0]{
-  _id, nomeDoEvento, dataDoEvento, circuito, cidade
-}`;
+// const proximaCorridaQuery = `*[_type == "evento" && (status == "agendado" || status == "adiado") && dataDoEvento >= $hojeISO] | order(dataDoEvento asc) [0]{
+//   _id, nomeDoEvento, dataDoEvento, circuito, cidade
+// }`;
 
-const teaserAlbunsQuery = `*[_type == "albumDeFotos" && defined(imagemDeCapa.asset) && defined(slug.current)]{
-  _id,
-  titulo,
-  slug,
-  imagemDeCapa{alt, asset->}
-} | order(dataDoAlbum desc, _createdAt desc) [0...6]`;
+// const teaserAlbunsQuery = `*[_type == "albumDeFotos" && defined(imagemDeCapa.asset) && defined(slug.current)]{
+//   _id,
+//   titulo,
+//   slug,
+//   imagemDeCapa{alt, asset->}
+// } | order(dataDoAlbum desc, _createdAt desc) [0...6]`;
 
-// Nova query para dados da página sobre
-const paginaSobreQuery = `*[_type == "paginaSobre"][0]{
-  _id,
-  titulo,
-  imagemPrincipal{alt, asset->}
-}`;
+// // Nova query para dados da página sobre
+// const paginaSobreQuery = `*[_type == "paginaSobre"][0]{
+//   _id,
+//   titulo,
+//   imagemPrincipal{alt, asset->}
+// }`;
 
 // Query unificada para otimizar requests
 const homePageDataQuery = `{
@@ -109,7 +109,7 @@ export default function HomePage() {
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
-  const y1 = useTransform(scrollY, [0, 500], [0, 150]);
+  //const y1 = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   useEffect(() => {

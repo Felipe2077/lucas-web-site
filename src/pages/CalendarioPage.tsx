@@ -44,29 +44,20 @@ const formatarData = (dataISO: string) => {
       timeZone: 'UTC',
     });
   } catch (e) {
-    return 'Data inválida';
+    return `Data inválida ${e}`;
   }
 };
 
-const formatarHora = (dataISO: string) => {
+const formatarHora = (hora: string | undefined): string => {
+  if (!hora) return '';
+
   try {
-    if (dataISO && dataISO.includes('T')) {
-      const dateObj = new Date(dataISO);
-      if (
-        dateObj.getUTCHours() === 0 &&
-        dateObj.getUTCMinutes() === 0 &&
-        dateObj.getUTCSeconds() === 0
-      ) {
-        return '';
-      }
-      return dateObj.toLocaleTimeString('pt-BR', {
-        hour: '2-digit',
-        minute: '2-digit',
-        timeZone: 'UTC',
-      });
-    }
-    return '';
-  } catch (e) {
+    // Sua lógica de formatação aqui
+    return new Date(`2000-01-01 ${hora}`).toLocaleTimeString('pt-BR', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  } catch {
     return '';
   }
 };
@@ -93,7 +84,6 @@ export default function CalendarioPage() {
   }, []); // Roda uma vez na montagem
 
   const hojeISO = new Date().toISOString(); // Data e hora atuais em ISO string para comparação precisa
-  const hojeApenasData = hojeISO.split('T')[0];
 
   const eventosFuturos = eventos
     .filter((e) => {

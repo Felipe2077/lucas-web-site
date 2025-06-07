@@ -88,7 +88,11 @@ const HeaderGlassmorphism = () => {
                           textShadow: '0 0 30px rgba(59, 130, 246, 0.5)',
                         }}
                       >
-                        <img src='/logo.png' alt='Logo' className='w-[92px]' />
+                        <img
+                          src='/images/logo-lucas-foresti.png'
+                          alt='Lucas Foresti'
+                          className='w-[92px]'
+                        />
                       </motion.div>
                       <div className='absolute -inset-2 bg-blue-500 rounded-full opacity-20 blur-xl group-hover:opacity-40 transition-opacity' />
                     </div>
@@ -220,59 +224,65 @@ const HeaderGlassmorphism = () => {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <Link
-                        to={link.href}
-                        className={`relative px-4 py-3 rounded-xl font-medium group overflow-hidden block ${
-                          isActive
-                            ? 'text-white bg-gradient-to-r from-blue-500/20 to-orange-500/20 border border-blue-500/30'
-                            : 'text-gray-300 hover:text-white'
-                        }`}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {/* Hover effect para links não ativos */}
-                        {!isActive && (
-                          <motion.div
-                            className='absolute inset-0 bg-gradient-to-r from-blue-500/20 to-orange-500/20'
-                            initial={{ x: '-100%' }}
-                            whileHover={{ x: 0 }}
-                            transition={{ duration: 0.3 }}
-                          />
-                        )}
-
-                        <span className='relative z-10 flex items-center gap-3'>
-                          <span className='text-lg'>{link.icon}</span>
-                          {link.label}
-                          {isActive && (
+                      <motion.div whileTap={{ scale: 0.95 }}>
+                        <Link
+                          to={link.href}
+                          className={`relative px-4 py-3 rounded-xl font-medium group overflow-hidden block ${
+                            isActive
+                              ? 'text-white bg-gradient-to-r from-blue-500/20 to-orange-500/20 border border-blue-500/30'
+                              : 'text-gray-300 hover:text-white'
+                          }`}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          {/* Hover effect para links não ativos */}
+                          {!isActive && (
                             <motion.div
-                              className='ml-auto w-2 h-2 bg-blue-400 rounded-full'
-                              animate={{ scale: [1, 1.5, 1] }}
-                              transition={{ duration: 1, repeat: Infinity }}
+                              className='absolute inset-0 bg-gradient-to-r from-blue-500/20 to-orange-500/20'
+                              initial={{ x: '-100%' }}
+                              whileHover={{ x: 0 }}
+                              transition={{ duration: 0.3 }}
                             />
                           )}
-                        </span>
-                      </Link>
+
+                          <span className='relative z-10 flex items-center gap-3'>
+                            <span className='text-lg'>{link.icon}</span>
+                            {link.label}
+                            {isActive && (
+                              <motion.div
+                                className='ml-auto w-2 h-2 bg-blue-400 rounded-full'
+                                animate={{ scale: [1, 1.5, 1] }}
+                                transition={{ duration: 1, repeat: Infinity }}
+                              />
+                            )}
+                          </span>
+                        </Link>
+                      </motion.div>
                     </motion.div>
                   );
                 })}
               </nav>
 
               {/* Mobile CTA */}
-              <motion.div
-                className='mt-6'
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-              >
+              <motion.div className='mt-4' whileTap={{ scale: 0.95 }}>
                 <Link
                   to='/contato'
-                  className='w-full relative px-6 py-3 overflow-hidden rounded-xl group block text-center'
+                  className='inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-600 hover:to-blue-600 text-white rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25'
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <span className='relative z-10 font-bold text-white uppercase tracking-wider'>
-                    Entre em Contato
-                  </span>
-                  <div className='absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl' />
+                  <span>Contato</span>
+                  <svg
+                    className='w-4 h-4'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M17 8l4 4m0 0l-4 4m4-4H3'
+                    />
+                  </svg>
                 </Link>
               </motion.div>
             </motion.div>
