@@ -1,6 +1,5 @@
 // src/pages/HomePage.tsx
 
-import ProximaCorridaCountdown from '@/components/calendario/ProximaCorridaCountDown';
 import HomeGaleriaSection from '@/components/galeria/HomeGaleriaSection';
 import imageUrlBuilder from '@sanity/image-url';
 import { motion, useScroll, useTransform } from 'framer-motion';
@@ -547,7 +546,7 @@ export default function HomePage() {
         )}
 
         {/* Seção Próxima Corrida */}
-        <ProximaCorridaCountdown proximaCorrida={proximaCorrida} />
+        {/* <ProximaCorridaCountdown proximaCorrida={proximaCorrida} /> */}
 
         {/* Seção Galeria */}
         <HomeGaleriaSection />

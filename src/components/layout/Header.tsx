@@ -88,17 +88,9 @@ const HeaderGlassmorphism = () => {
                           textShadow: '0 0 30px rgba(59, 130, 246, 0.5)',
                         }}
                       >
-                        12
+                        <img src='/logo.png' alt='Logo' className='w-[92px]' />
                       </motion.div>
                       <div className='absolute -inset-2 bg-blue-500 rounded-full opacity-20 blur-xl group-hover:opacity-40 transition-opacity' />
-                    </div>
-                    <div>
-                      <div className='text-xl font-bold text-white'>
-                        Lucas Foresti
-                      </div>
-                      <div className='text-xs text-gray-400 uppercase tracking-wider'>
-                        Stock Car Driver
-                      </div>
                     </div>
                   </Link>
                 </motion.div>

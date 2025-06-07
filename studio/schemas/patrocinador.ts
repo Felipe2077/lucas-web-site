@@ -81,7 +81,7 @@ export default defineType({
       title: 'Descrição Completa',
       type: 'text',
       description: 'Descrição detalhada que aparece no modal',
-      validation: (Rule) => Rule.max(1000),
+      validation: (Rule) => Rule.max(2000),
     }),
     defineField({
       name: 'link',

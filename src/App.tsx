@@ -13,15 +13,15 @@ import NoticiasPage from './pages/NoticiasPage';
 import PatrocinadoresPage from './pages/PatrocinadoresPage';
 import SobrePage from './pages/SobrePage';
 
-// --- PASSO FUTURO: Importar componentes Header e Footer reais ---
+// Componentes Header e Footer
 import Footer from './components/layout/Footer';
 import Header from './components/layout/Header';
 
 function SiteLayout() {
   return (
-    <div className='flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100'>
+    <div className='flex flex-col min-h-screen bg-neutral-900 text-neutral-100'>
       <Header />
-      <main className='flex-grow '>
+      <main className='flex-grow'>
         <Outlet />
       </main>
       <Footer />
