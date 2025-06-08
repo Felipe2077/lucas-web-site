@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import logoLucas from '/images/logo-lucas-foresti.png';
 
 const HeaderGlassmorphism = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -47,34 +48,38 @@ const HeaderGlassmorphism = () => {
     <>
       <motion.header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled ? 'py-2' : 'py-4'
+          isScrolled ? 'py-1 sm:py-2' : 'py-2 sm:py-4'
         }`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className='container mx-auto px-4'>
+        <div className='container mx-auto px-3 sm:px-4'>
           <div
-            className={`relative rounded-2xl transition-all duration-500 ${
+            className={`relative rounded-xl sm:rounded-2xl transition-all duration-500 ${
               isScrolled
                 ? 'bg-black/40 backdrop-blur-2xl border border-white/10'
                 : 'bg-transparent'
             }`}
           >
             {/* Glow effect */}
-            <div className='absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-orange-500 rounded-2xl opacity-0 group-hover:opacity-20 blur-lg transition-opacity duration-500' />
+            <div className='absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-orange-500 rounded-xl sm:rounded-2xl opacity-0 group-hover:opacity-20 blur-lg transition-opacity duration-500' />
 
-            <div className='relative px-6 py-4'>
+            <div className='relative px-3 sm:px-6 py-3 sm:py-4'>
               <div className='flex items-center justify-between'>
                 {/* Logo */}
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  className='flex-shrink-0'
                 >
-                  <Link to='/' className='flex items-center gap-3 group'>
+                  <Link
+                    to='/'
+                    className='flex items-center gap-2 sm:gap-3 group'
+                  >
                     <div className='relative'>
                       <motion.div
-                        className='text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600'
+                        className='flex items-center'
                         animate={{
                           backgroundPosition: ['0%', '100%', '0%'],
                         }}
@@ -83,15 +88,11 @@ const HeaderGlassmorphism = () => {
                           repeat: Infinity,
                           ease: 'linear',
                         }}
-                        style={{
-                          backgroundSize: '200% 100%',
-                          textShadow: '0 0 30px rgba(59, 130, 246, 0.5)',
-                        }}
                       >
                         <img
-                          src='/images/logo-lucas-foresti.png'
+                          src={logoLucas}
                           alt='Lucas Foresti'
-                          className='w-[92px]'
+                          className='w-16 h-auto sm:w-20 md:w-[92px] object-contain'
                         />
                       </motion.div>
                       <div className='absolute -inset-2 bg-blue-500 rounded-full opacity-20 blur-xl group-hover:opacity-40 transition-opacity' />
@@ -154,16 +155,16 @@ const HeaderGlassmorphism = () => {
 
                 {/* Mobile Menu Button */}
                 <button
-                  className='lg:hidden relative w-10 h-10 flex items-center justify-center'
+                  className='lg:hidden relative w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center flex-shrink-0'
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
                   <div className='absolute inset-0 bg-white/10 backdrop-blur-md rounded-lg' />
-                  <motion.div className='relative w-6 h-5 flex flex-col justify-between'>
+                  <motion.div className='relative w-5 h-4 sm:w-6 sm:h-5 flex flex-col justify-between'>
                     <motion.span
                       className='w-full h-0.5 bg-white rounded-full'
                       animate={{
                         rotate: isMobileMenuOpen ? 45 : 0,
-                        y: isMobileMenuOpen ? 10 : 0,
+                        y: isMobileMenuOpen ? 8 : 0,
                       }}
                     />
                     <motion.span
@@ -176,7 +177,7 @@ const HeaderGlassmorphism = () => {
                       className='w-full h-0.5 bg-white rounded-full'
                       animate={{
                         rotate: isMobileMenuOpen ? -45 : 0,
-                        y: isMobileMenuOpen ? -10 : 0,
+                        y: isMobileMenuOpen ? -8 : 0,
                       }}
                     />
                   </motion.div>
@@ -207,7 +208,7 @@ const HeaderGlassmorphism = () => {
 
             {/* Menu Content */}
             <motion.div
-              className='absolute top-20 left-4 right-4 bg-black/60 backdrop-blur-2xl rounded-2xl border border-white/10 p-6'
+              className='absolute top-16 sm:top-20 left-3 right-3 sm:left-4 sm:right-4 bg-black/60 backdrop-blur-2xl rounded-2xl border border-white/10 p-4 sm:p-6'
               initial={{ scale: 0.9, y: -20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: -20 }}
@@ -266,7 +267,7 @@ const HeaderGlassmorphism = () => {
               <motion.div className='mt-4' whileTap={{ scale: 0.95 }}>
                 <Link
                   to='/contato'
-                  className='inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-600 hover:to-blue-600 text-white rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25'
+                  className='inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-600 hover:to-blue-600 text-white rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25 w-full justify-center'
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <span>Contato</span>
@@ -291,7 +292,7 @@ const HeaderGlassmorphism = () => {
       </AnimatePresence>
 
       {/* Add padding to body to account for fixed header */}
-      <div className='h-24' />
+      <div className='h-24 sm:h-28 md:h-32' />
     </>
   );
 };

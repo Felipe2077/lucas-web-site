@@ -228,7 +228,7 @@ export default function PatrocinadoresPage() {
 
                       {/* Logo Section */}
                       <div className='absolute top-6 left-6 right-6'>
-                        <div className='w-16 h-16 bg-white/90 backdrop-blur-md rounded-xl p-3 shadow-lg'>
+                        <div className='w-16 h-16 bg-white rounded-xl p-3 shadow-lg'>
                           <img
                             src={logoSrc}
                             alt={
@@ -369,7 +369,7 @@ export default function PatrocinadoresPage() {
           </motion.div>
         </div>
 
-        {/* Modal for Partner Details */}
+        {/* Modal for Partner Details - CORRIGIDO */}
         {selectedPartner && (
           <motion.div
             className='fixed inset-0 z-50 flex items-center justify-center p-4'
@@ -380,15 +380,16 @@ export default function PatrocinadoresPage() {
           >
             <div className='absolute inset-0 bg-black/80 backdrop-blur-xl' />
 
+            {/* Modal Container com altura máxima e scroll */}
             <motion.div
-              className='relative max-w-2xl w-full bg-gray-900 rounded-2xl overflow-hidden'
+              className='relative w-full max-w-2xl max-h-[90vh] bg-gray-900 rounded-2xl overflow-hidden flex flex-col'
               initial={{ scale: 0.8, y: 50 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.8, y: 50 }}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Header Image */}
-              <div className='relative h-48'>
+              {/* Header Image - Fixo */}
+              <div className='relative h-48 flex-shrink-0'>
                 {selectedPartner.imagemDeFundo ? (
                   <img
                     src={
@@ -407,17 +408,14 @@ export default function PatrocinadoresPage() {
                 ) : (
                   <div className='w-full h-full bg-gradient-to-br from-gray-700 to-gray-900' />
                 )}
-                <div
-                  className={`absolute inset-0 bg-gradient-to-t ${getGradientColor(
-                    selectedPartner,
-                    0
-                  )} opacity-80`}
-                />
+
+                {/* Gradiente overlay - LIMITADO para não cobrir a logo */}
+                <div className='absolute inset-0 bg-black/60' />
 
                 {/* Close Button */}
                 <button
                   onClick={() => setSelectedPartner(null)}
-                  className='absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-black/70 transition-colors'
+                  className='absolute top-4 right-4 w-10 h-10 bg-black/50 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-black/70 transition-colors z-30'
                 >
                   <svg
                     className='w-5 h-5 text-white'
@@ -433,62 +431,64 @@ export default function PatrocinadoresPage() {
                     />
                   </svg>
                 </button>
+              </div>
 
-                {/* Logo */}
-                <div className='absolute -bottom-8 left-6'>
-                  <div className='w-16 h-16 bg-white rounded-xl p-3 shadow-lg'>
-                    <img
-                      src={
-                        urlFor(selectedPartner.logo)
-                          ?.height(100)
-                          .fit('max')
-                          .auto('format')
-                          .quality(85)
-                          .url() || ''
-                      }
-                      alt={
-                        selectedPartner.logo.alt ||
-                        `${selectedPartner.nome} logo`
-                      }
-                      className='w-full h-full object-contain'
-                    />
-                  </div>
+              {/* Logo FORA do header para evitar overlays */}
+              <div className='relative z-30 -mt-8 ml-6 mb-4'>
+                <div className='w-16 h-16 bg-white rounded-xl p-3 shadow-lg border border-gray-200'>
+                  <img
+                    src={
+                      urlFor(selectedPartner.logo)
+                        ?.height(100)
+                        .fit('max')
+                        .auto('format')
+                        .quality(85)
+                        .url() || ''
+                    }
+                    alt={
+                      selectedPartner.logo.alt || `${selectedPartner.nome} logo`
+                    }
+                    className='w-full h-full object-contain'
+                  />
                 </div>
               </div>
 
-              {/* Content */}
-              <div className='p-6 pt-12'>
-                {selectedPartner.categoria && (
-                  <span className='inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full uppercase tracking-wider mb-3'>
-                    {selectedPartner.categoria}
-                  </span>
-                )}
-                <h3 className='text-3xl font-bold text-white mb-4'>
-                  {selectedPartner.nome}
-                </h3>
-                <p className='text-gray-300 leading-relaxed mb-6'>
-                  {selectedPartner.descricaoCompleta ||
-                    selectedPartner.descricaoCurta ||
-                    'Descrição não disponível.'}
-                </p>
-
-                <div className='flex gap-4'>
-                  {selectedPartner.link && (
-                    <a
-                      href={selectedPartner.link}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className='flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors text-center'
-                    >
-                      Visitar Site
-                    </a>
+              {/* Content - Scrollável */}
+              <div className='flex-1 overflow-y-auto'>
+                <div className='p-6 pt-4'>
+                  {selectedPartner.categoria && (
+                    <span className='inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full uppercase tracking-wider mb-3'>
+                      {selectedPartner.categoria}
+                    </span>
                   )}
-                  <button
-                    onClick={() => setSelectedPartner(null)}
-                    className='px-6 py-3 border border-gray-600 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors'
-                  >
-                    Fechar
-                  </button>
+                  <h3 className='text-3xl font-bold text-white mb-4'>
+                    {selectedPartner.nome}
+                  </h3>
+                  <div className='text-gray-300 leading-relaxed mb-6'>
+                    {selectedPartner.descricaoCompleta ||
+                      selectedPartner.descricaoCurta ||
+                      'Descrição não disponível.'}
+                  </div>
+
+                  {/* Botões */}
+                  <div className='flex flex-col sm:flex-row gap-4 pt-4 border-t border-gray-700'>
+                    {selectedPartner.link && (
+                      <a
+                        href={selectedPartner.link}
+                        target='_blank'
+                        rel='noopener noreferrer'
+                        className='flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors text-center'
+                      >
+                        Visitar Site
+                      </a>
+                    )}
+                    <button
+                      onClick={() => setSelectedPartner(null)}
+                      className='px-6 py-3 border border-gray-600 text-gray-300 hover:bg-gray-800 rounded-lg transition-colors'
+                    >
+                      Fechar
+                    </button>
+                  </div>
                 </div>
               </div>
             </motion.div>

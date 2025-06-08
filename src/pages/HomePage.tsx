@@ -40,29 +40,6 @@ interface HomePageData {
 
 const hojeISO = new Date().toISOString().split('T')[0];
 
-// Queries GROQ
-// const ultimasNoticiasQuery = `*[_type == "noticia"]{
-//   _id, titulo, slug, dataDePublicacao, imagemDeCapa{alt, asset->}, resumo
-// } | order(dataDePublicacao desc) [0...3]`;
-
-// const proximaCorridaQuery = `*[_type == "evento" && (status == "agendado" || status == "adiado") && dataDoEvento >= $hojeISO] | order(dataDoEvento asc) [0]{
-//   _id, nomeDoEvento, dataDoEvento, circuito, cidade
-// }`;
-
-// const teaserAlbunsQuery = `*[_type == "albumDeFotos" && defined(imagemDeCapa.asset) && defined(slug.current)]{
-//   _id,
-//   titulo,
-//   slug,
-//   imagemDeCapa{alt, asset->}
-// } | order(dataDoAlbum desc, _createdAt desc) [0...6]`;
-
-// // Nova query para dados da página sobre
-// const paginaSobreQuery = `*[_type == "paginaSobre"][0]{
-//   _id,
-//   titulo,
-//   imagemPrincipal{alt, asset->}
-// }`;
-
 // Query unificada para otimizar requests
 const homePageDataQuery = `{
   "ultimasNoticias": *[_type == "noticia"] | order(dataDePublicacao desc) [0...3] {
@@ -109,7 +86,6 @@ export default function HomePage() {
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollY } = useScroll();
-  //const y1 = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   useEffect(() => {
@@ -194,7 +170,7 @@ export default function HomePage() {
         {/* Hero Section Integrada */}
         <section
           ref={heroRef}
-          className='relative min-h-screen flex items-center overflow-hidden'
+          className='relative min-h-screen flex items-center overflow-hidden pt-8'
         >
           {/* Background Effects */}
           <div className='absolute inset-0'>

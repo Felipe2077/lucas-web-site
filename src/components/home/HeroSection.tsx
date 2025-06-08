@@ -22,7 +22,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className='relative h-screen min-h-[700px] overflow-hidden bg-black'>
+    <section className='relative h-screen min-h-[700px] overflow-hidden bg-black mt-4'>
       {/* Video Background with Overlay */}
       <div className='absolute inset-0'>
         <div className='absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60 z-10' />
